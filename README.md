@@ -1,0 +1,2 @@
+# Mazes
+Solve the mazes
