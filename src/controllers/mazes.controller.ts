@@ -3,7 +3,7 @@ export class MazesController {
     solveMaze(mazeMatrix: Array<Array<string>>): Array<string> {
 
         if (!mazeMatrix || !mazeMatrix.length) {
-            throw new Error("maze is invalid");
+            throw new Error('maze is invalid');
         }
 
         const entryColumnIndex = this.findMazeEntry(mazeMatrix[0]);
