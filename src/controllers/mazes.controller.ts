@@ -1,5 +1,12 @@
 export class MazesController {
 
+    mazeMatrix: Array<Array<number>>;
+    result: Array<Array<number>>;
+    endRow: number;
+    endCol: number;
+    rowLength: number;
+    colLength: number;
+
     solveMaze(mazeMatrix: Array<Array<string>>): Array<string> {
 
         if (!mazeMatrix || !mazeMatrix.length) {
@@ -21,6 +28,76 @@ export class MazesController {
 
         const result = new Array<string>();
         return result;
+    }
+
+    // 1 0 1 1
+    // 1 0 0 1
+    // 1 0 1 1
+    // 1 0 0 1
+    // 1 1 0 1
+    // 0 1
+    // 4 2
+    solveMazeByDFS(mazeMatrix: Array<Array<number>>, startPoint: any, endPoint: any): Array<Array<number>> {
+
+        this.checkParameters(mazeMatrix, startPoint, endPoint);
+
+        this.mazeMatrix = mazeMatrix;
+
+        this.rowLength = mazeMatrix.length;
+        this.colLength = mazeMatrix[0].length;
+
+        let i = startPoint.row;
+        let j = startPoint.column;
+
+        this.endRow = endPoint.row;
+        this.endCol = endPoint.column;
+
+        this.result = new Array<Array<number>>();
+
+        for (let index = 0; index < this.rowLength; index++) {
+
+            this.result[index] = new Array<number>();
+            for (let indexCol = 0; indexCol < this.colLength; indexCol++) {
+                this.result[index][indexCol] = 0;
+            }
+        }
+
+        this.findWay(i, j);
+        return this.result;
+    }
+
+    private findWay(i: number, j: number) {
+
+        this.addPlace(i, j);
+
+        if (i === this.endRow && j === this.endCol) {
+            return;
+        }
+
+        if (j++ < this.colLength && !this.mazeMatrix[i][j++] && !this.result[i][j++]) {
+            this.findWay(i, j++);
+        }
+
+        if (i++ < this.rowLength && !this.mazeMatrix[i++][j] && !this.result[i++][j]) {
+            this.findWay(i++, j);
+        }
+
+        if (j-- >= 0 && !this.mazeMatrix[i][j--] && !this.result[i][j--]) {
+            this.findWay(i, j--);
+        }
+
+        if (i-- >= 0 && !this.mazeMatrix[i--][j] && !this.result[i--][j]) {
+            this.findWay(i--, j);
+        }
+    }
+
+    private addPlace(i: number, j: number) {
+
+        this.result[i][j] = 1;
+    }
+
+    private checkParameters(mazeMatrix: Array<Array<number>>, startPoint: any, endPoint: any) {
+
     }
 
     private findMazeEntry(row: Array<string>): number {
