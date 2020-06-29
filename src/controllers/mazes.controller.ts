@@ -74,20 +74,28 @@ export class MazesController {
             return;
         }
 
-        if (j++ < this.colLength && !this.mazeMatrix[i][j++] && !this.result[i][j++]) {
-            this.findWay(i, j++);
+        let ind = j;
+        ind++;
+        if (ind < this.colLength && !this.mazeMatrix[i][ind] && !this.result[i][ind]) {
+            this.findWay(i, ind);
         }
 
-        if (i++ < this.rowLength && !this.mazeMatrix[i++][j] && !this.result[i++][j]) {
-            this.findWay(i++, j);
+        ind = i;
+        ind++;
+        if (ind < this.rowLength && !this.mazeMatrix[ind][j] && !this.result[ind][j]) {
+            this.findWay(ind, j);
         }
 
-        if (j-- >= 0 && !this.mazeMatrix[i][j--] && !this.result[i][j--]) {
-            this.findWay(i, j--);
+        ind = j;
+        ind--;
+        if (ind >= 0 && !this.mazeMatrix[i][ind] && !this.result[i][ind]) {
+            this.findWay(i, ind);
         }
 
-        if (i-- >= 0 && !this.mazeMatrix[i--][j] && !this.result[i--][j]) {
-            this.findWay(i--, j);
+        ind = i;
+        ind--;
+        if (ind >= 0 && !this.mazeMatrix[ind][j] && !this.result[ind][j]) {
+            this.findWay(ind, j);
         }
     }
 
