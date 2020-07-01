@@ -111,7 +111,14 @@ describe('Mazes controller tests', () => {
 
     describe('solveMazeByDFS tests', () => {
 
-        it('findWay', () => {
+        // 1 0 1 1
+        // 1 0 0 1
+        // 1 0 1 1
+        // 1 0 0 1
+        // 1 1 0 1
+        // 0 1
+        // 4 2
+        it('findWay1', () => {
 
             var mazeMatrix = new Array<Array<number>>();
             mazeMatrix[0] = new Array<number>();
@@ -168,6 +175,63 @@ describe('Mazes controller tests', () => {
             expectedResult[4][1] = 0;
             expectedResult[4][2] = 1;
             expectedResult[4][3] = 0;
+
+            expect(result).eq(expectedResult);
+        });
+
+        // 0 1 0 0
+        // 0 0 1 1 
+        // 1 0 0 1
+        // 1 1 1 0
+        it('findWay2', () => {
+2
+            var mazeMatrix = new Array<Array<number>>();
+            mazeMatrix[0] = new Array<number>();
+            mazeMatrix[0][0] = 0;
+            mazeMatrix[0][1] = 1;
+            mazeMatrix[0][2] = 0;
+            mazeMatrix[0][3] = 0;
+            mazeMatrix[1] = new Array<number>();
+            mazeMatrix[1][0] = 0;
+            mazeMatrix[1][1] = 0;
+            mazeMatrix[1][2] = 1;
+            mazeMatrix[1][3] = 1;
+            mazeMatrix[2] = new Array<number>();
+            mazeMatrix[2][0] = 1;
+            mazeMatrix[2][1] = 0;
+            mazeMatrix[2][2] = 0;
+            mazeMatrix[2][3] = 1;
+            mazeMatrix[3] = new Array<number>();
+            mazeMatrix[3][0] = 1;
+            mazeMatrix[3][1] = 1;
+            mazeMatrix[3][2] = 1;
+            mazeMatrix[3][3] = 0;
+
+
+            let result = mazeController.solveMazeByDFS(mazeMatrix, { row: 0, column: 0 }, { row: 2, column: 2 });
+
+            const expectedResult = new Array<Array<number>>();
+            expectedResult[0] = new Array<number>();
+            expectedResult[0][0] = 1;
+            expectedResult[0][1] = 0;
+            expectedResult[0][2] = 0;
+            expectedResult[0][3] = 0;
+            expectedResult[1] = new Array<number>();
+            expectedResult[1][0] = 1;
+            expectedResult[1][1] = 1;
+            expectedResult[1][2] = 0;
+            expectedResult[1][3] = 0;
+            expectedResult[2] = new Array<number>();
+            expectedResult[2][0] = 0;
+            expectedResult[2][1] = 1;
+            expectedResult[2][2] = 1;
+            expectedResult[2][3] = 0;
+            expectedResult[3] = new Array<number>();
+            expectedResult[3][0] = 0;
+            expectedResult[3][1] = 0;
+            expectedResult[3][2] = 0;
+            expectedResult[3][3] = 0;
+
 
             expect(result).eq(expectedResult);
         });

@@ -6,6 +6,7 @@ export class MazesController {
     endCol: number;
     rowLength: number;
     colLength: number;
+    isComplete = false;
 
     solveMaze(mazeMatrix: Array<Array<string>>): Array<string> {
 
@@ -30,13 +31,6 @@ export class MazesController {
         return result;
     }
 
-    // 1 0 1 1
-    // 1 0 0 1
-    // 1 0 1 1
-    // 1 0 0 1
-    // 1 1 0 1
-    // 0 1
-    // 4 2
     solveMazeByDFS(mazeMatrix: Array<Array<number>>, startPoint: any, endPoint: any): Array<Array<number>> {
 
         this.checkParameters(mazeMatrix, startPoint, endPoint);
@@ -71,6 +65,7 @@ export class MazesController {
         this.addPlace(i, j);
 
         if (i === this.endRow && j === this.endCol) {
+            this.isComplete = true;
             return;
         }
 
@@ -97,11 +92,21 @@ export class MazesController {
         if (ind >= 0 && !this.mazeMatrix[ind][j] && !this.result[ind][j]) {
             this.findWay(ind, j);
         }
+
+        if (!this.isComplete) {
+
+            this.removePlace(i, j);
+        }
     }
 
     private addPlace(i: number, j: number) {
 
         this.result[i][j] = 1;
+    }
+
+    private removePlace(i: number, j: number) {
+
+        this.result[i][j] = 0;
     }
 
     private checkParameters(mazeMatrix: Array<Array<number>>, startPoint: any, endPoint: any) {
