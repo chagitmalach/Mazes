@@ -1,71 +1,93 @@
 export class MazesController {
 
-    mazeMatrix: Array<Array<string>>;
-    mazeWay: Array<string>;
+    mazeMatrix: Array<Array<number>>;
+    result: Array<Array<number>>;
+    endRow: number;
+    endCol: number;
+    rowLength: number;
+    colLength: number;
+    isComplete = false;
 
-    solveMaze(mazeMatrix: Array<Array<string>>): Array<string> {
+    solveMazeByDFS(mazeMatrix: Array<Array<number>>, startPoint: any, endPoint: any): Array<Array<number>> {
 
-        if (!mazeMatrix || !mazeMatrix.length) {
-            throw new Error('Maze is invalid');
-        }
+        this.checkParameters(mazeMatrix, startPoint, endPoint);
 
         this.mazeMatrix = mazeMatrix;
-        const entryColumnIndex = this.findMazeEntry(0, '0');
 
-        if (entryColumnIndex === -1) {
-            throw new Error('There is no entry in maze');
+        this.rowLength = mazeMatrix.length;
+        this.colLength = mazeMatrix[0].length;
+
+        let i = startPoint.row;
+        let j = startPoint.column;
+
+        this.endRow = endPoint.row;
+        this.endCol = endPoint.column;
+
+        this.result = new Array<Array<number>>();
+
+        for (let index = 0; index < this.rowLength; index++) {
+
+            this.result[index] = new Array<number>();
+            for (let indexCol = 0; indexCol < this.colLength; indexCol++) {
+                this.result[index][indexCol] = 0;
+            }
         }
 
-        const exitColumnIndex = this.findMazeEntry(mazeMatrix.length - 1, '2');
-
-        if (exitColumnIndex === -1) {
-            throw new Error('There is no exit in maze');
-        }
-
-        this.mazeWay = new Array<string>();
-
-        this.findWay(0, entryColumnIndex, 1);
-        return this.mazeWay;
+        this.findWay(i, j);
+        return this.result;
     }
 
-    private findMazeEntry(rowIndex: number, searchBlockNumber: string): number {
+    private findWay(i: number, j: number) {
 
-        const row = this.mazeMatrix[rowIndex];
+        this.addPlace(i, j);
 
-        if (!row.length) {
-            throw new Error('The columns in this row are undefined');
+        if (i === this.endRow && j === this.endCol) {
+            this.isComplete = true;
+            return;
         }
 
-        let indexEntry = -1;
+        let ind = j;
+        ind++;
+        if (ind < this.colLength && !this.mazeMatrix[i][ind] && !this.result[i][ind]) {
+            this.findWay(i, ind);
+        }
 
-        row.forEach((col, ind) => {
+        ind = i;
+        ind++;
+        if (ind < this.rowLength && !this.mazeMatrix[ind][j] && !this.result[ind][j]) {
+            this.findWay(ind, j);
+        }
 
-            if (col.indexOf(searchBlockNumber) === -1)
-                indexEntry = ind;
-        });
+        ind = j;
+        ind--;
+        if (ind >= 0 && !this.mazeMatrix[i][ind] && !this.result[i][ind]) {
+            this.findWay(i, ind);
+        }
 
-        return indexEntry;
+        ind = i;
+        ind--;
+        if (ind >= 0 && !this.mazeMatrix[ind][j] && !this.result[ind][j]) {
+            this.findWay(ind, j);
+        }
+
+        if (!this.isComplete) {
+
+            this.removePlace(i, j);
+        }
     }
 
-    private findWay(row: number, col: number, blockNumber: number) {
+    private addPlace(i: number, j: number) {
 
-        if (this.mazeMatrix.length === row ||
-            this.mazeMatrix[row].length === col ||
-            this.mazeMatrix[row][col].indexOf(blockNumber.toString()) !== -1) {
-            return this.findWay(row, col, ++blockNumber);
-        }
+        this.result[i][j] = 1;
+    }
 
-        this.mazeWay.push(`${row},${col}`);
+    private removePlace(i: number, j: number) {
 
-        if (blockNumber === 0 || blockNumber === 2) {
+        this.result[i][j] = 0;
+    }
 
-            return this.findWay(++row, col, blockNumber);
-        }
-
-        if (blockNumber === 1 || blockNumber === 3) {
-
-            return this.findWay(row, ++col, blockNumber);
-        }
+    private checkParameters(mazeMatrix: Array<Array<number>>, startPoint: any, endPoint: any) {
 
     }
+
 }
